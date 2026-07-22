@@ -1,0 +1,20 @@
+# Ignore the file containing actual saved passwords (CRITICAL for security)
+passwords.json
+
+# Ignore Python bytecode / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore virtual environments
+venv/
+.venv/
+env/
+
+# Ignore IDE / Editor settings
+.vscode/
+.idea/
+
+# Ignore OS system files
+.DS_Store
+Thumbs.db
