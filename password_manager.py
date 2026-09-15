@@ -1,6 +1,6 @@
 import json
 import random
-import string
+import secrets
 
 FILENAME = "passwords.json"
 
@@ -108,8 +108,8 @@ def generate_password():
             input("Enter desired password length (e.g., 12): ")
         )
 
-        if length < 4:
-            print("⚠️ Password length should be at least 4 characters.")
+        if length < 8:
+            print("⚠️ Password length should be at least 8 characters.")
             return
 
         characters = (
@@ -119,7 +119,7 @@ def generate_password():
         )
 
         generated_pass = "".join(
-            random.choice(characters)
+            secrets.choice(characters)
             for _ in range(length)
         )
 
