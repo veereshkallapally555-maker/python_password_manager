@@ -36,6 +36,14 @@ def add_password():
             break
         print("❌ Username cannot be empty.")
 
+    for item in passwords:
+        if (
+            item["website"].lower() == website.lower()
+            and item["username"].lower() == username.lower()
+        ):
+            print("⚠️ This website and username already exist.")
+            return
+
     while True:
         password = input("Enter the password: ").strip()
         if password:
