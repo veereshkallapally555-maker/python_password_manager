@@ -4,6 +4,7 @@ import string
 
 FILENAME = "passwords.json"
 
+
 def load_passwords():
     """Load passwords from the JSON file."""
     try:
@@ -12,20 +13,36 @@ def load_passwords():
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 
+
 def save_passwords():
     """Save passwords to the JSON file."""
     with open(FILENAME, "w") as file:
-        json.dump(Passwords, file, indent=4)
+        json.dump(passwords, file, indent=4)
 
-Passwords = load_passwords()
+
+passwords = load_passwords()
+
 
 def add_password():
+    while True:
+        website = input("Enter the website: ").strip()
+        if website:
+            break
+        print("❌ Website cannot be empty.")
 
-    website = input("Enter the website: ")
-    username = input("Enter the username: ")
-    password = input("Enter the password: ")
+    while True:
+        username = input("Enter the username: ").strip()
+        if username:
+            break
+        print("❌ Username cannot be empty.")
 
-    Passwords.append({
+    while True:
+        password = input("Enter the password: ").strip()
+        if password:
+            break
+        print("❌ Password cannot be empty.")
+
+    passwords.append({
         "website": website,
         "username": username,
         "password": password
@@ -33,34 +50,44 @@ def add_password():
 
     save_passwords()
 
-    print("Password added successfully!")
+    print("✅ Password added successfully!")
 
 
 def view_passwords():
-
-    if not Passwords:
+    if not passwords:
         print("No passwords stored.")
         return
 
-    print("=== All Passwords are here! ===")
+    print("=== All Passwords ===")
 
-    for i, data in enumerate(Passwords, start = 1):
-        print(f"{i}. {data['website']} | {data['username']} | {data['password']}")
+    for i, data in enumerate(passwords, start=1):
+        print(
+            f"{i}. {data['website']} | "
+            f"{data['username']} | "
+            f"{data['password']}"
+        )
 
 
 def search_password():
-    if not Passwords:
-
+    if not passwords:
         print("\n⚠️ No passwords saved yet!")
         return
 
-    search_query = input("Enter website name to search: ").strip().lower()
+    search_query = input(
+        "Enter website name to search: "
+    ).strip().lower()
+
     found = False
 
     print(f"\n====== Search Results for '{search_query}' ======")
-    for item in Passwords:
-        if search_query in item['website'].lower():
-            print(f"🌐 Website: {item['website']} | 👤 Username: {item['username']} | 🔑 Password: {item['password']}")
+
+    for item in passwords:
+        if search_query in item["website"].lower():
+            print(
+                f"🌐 Website: {item['website']} | "
+                f"👤 Username: {item['username']} | "
+                f"🔑 Password: {item['password']}"
+            )
             found = True
 
     if not found:
@@ -69,59 +96,77 @@ def search_password():
 
 def generate_password():
     try:
-        length = int(input("Enter desired password length (e.g., 12): "))
+        length = int(
+            input("Enter desired password length (e.g., 12): ")
+        )
+
         if length < 4:
             print("⚠️ Password length should be at least 4 characters.")
             return
-        
-        # Combine letters, numbers, and symbols
-        characters = string.ascii_letters + string.digits + string.punctuation
-        
-        # Generate a random password of the requested length
-        generated_pass = "".join(random.choice(characters) for _ in range(length))
-        
+
+        characters = (
+            string.ascii_letters
+            + string.digits
+            + string.punctuation
+        )
+
+        generated_pass = "".join(
+            random.choice(characters)
+            for _ in range(length)
+        )
+
         print(f"\n🔑 Generated Password: {generated_pass}")
-        
+
     except ValueError:
         print("❌ Invalid input! Please enter a valid number.")
 
 
 def delete_password():
-    if not Passwords:
+    if not passwords:
         print("No passwords stored.")
         return
 
     print("\n=== Saved Passwords ===")
-    for i, data in enumerate(Passwords, start=1):
-        print(f"{i}. Website: {data['website']} | Username:{data['username']}")
+
+    for i, data in enumerate(passwords, start=1):
+        print(
+            f"{i}. Website: {data['website']} | "
+            f"Username: {data['username']}"
+        )
 
     try:
-        choice = int(input("Enter the number of the password to delete: "))
-        if 1 <= choice <= len(Passwords):
-            deleted = Passwords.pop(choice - 1)
+        choice = int(
+            input("Enter the number of the password to delete: ")
+        )
+
+        if 1 <= choice <= len(passwords):
+            deleted = passwords.pop(choice - 1)
             save_passwords()
-            print(f"✅ Deleted password for {deleted['website']}.")
+
+            print(
+                f"✅ Deleted password for {deleted['website']}."
+            )
         else:
             print("❌ Invalid choice. Please try again.")
 
     except ValueError:
         print("❌ Invalid input! Please enter a valid number.")
 
+
 def main():
-    global Passwords
-    Passwords = load_passwords()
+    global passwords
+    passwords = load_passwords()
 
     while True:
-
-        print("=== Password Manager ===")
+        print("\n=== Password Manager ===")
         print("1. Add Password")
         print("2. View Passwords")
         print("3. Search Password")
-        print("4. generate Password")
-        print("5. delete Password")
+        print("4. Generate Password")
+        print("5. Delete Password")
         print("6. Exit")
 
-        choice = input("Enter your choice: ")
+        choice = input("Enter your choice: ").strip()
 
         if choice == "1":
             add_password()
@@ -141,8 +186,10 @@ def main():
         elif choice == "6":
             print("Thank You")
             break
+
         else:
-            print("Invalid choice. Please try again.")
+            print("❌ Invalid choice. Please try again.")
+
 
 if __name__ == "__main__":
     main()
